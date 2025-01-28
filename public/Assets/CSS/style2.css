@@ -1,0 +1,364 @@
+/* Main Layout */
+.home-wrap {
+    background-color: rgb(31, 30, 30);
+    height: 100vh;
+}
+.control-btn.chat {
+    /* position: fixed;
+    bottom: 10px;
+    right: 10px; */
+    background: transparent;
+    color: white;
+    border: none;
+    /* border-radius: 50%; */
+    padding: 10px;
+    cursor: pointer;
+}
+.control-btn.chat:hover {
+    background: transparent;
+}
+
+/* Chatbox Styling */
+.chatbox {
+    position: fixed;
+    bottom: 83px;
+    right: 20px; /* Adjusted to avoid overlap */
+    width: 383px;
+    height: 607px;
+    background: #ffffff; /* Set solid background */
+    border: 1px solid #ccc; /* Added visible border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+.chatbox.hidden {
+    display: none;
+}
+.chat-header {
+    padding: 10px;
+    background: #333; /* Solid color for header */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.chat-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f7f7f7;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+.chat-message {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+.chat-input {
+    display: flex;
+    border-top: 1px solid #ccc;
+}
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+.chat-input button {
+    padding: 10px 15px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.chat-input button:hover {
+    background: #0056b3;
+}
+.close-chat {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+}
+
+/* Chatbox Styling */
+.details {
+    position: fixed;
+    bottom: 83px;
+    width: 372px;
+    height: 160px;
+    background: #ffffff;
+    border: 1px solid #ccc;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+    left: 0.5%;
+}
+.details.hidden {
+    display: none;
+}
+.chat-header {
+    padding: 10px;
+    background: #333; /* Solid color for header */
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.txtlink {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: #f7f7f7;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    width: fit-content;
+}
+.txtlink {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+.txtlink {
+    display: flex;
+    border-top: 1px solid #ccc;
+}
+.chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+.detail-block button {
+    padding: 10px 167px;
+    background: #007bff;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+.detail-block button:hover {
+    background: #0056b3;
+}
+.close-chat {
+    background: none;
+    border: none;
+    font-size: 18px;
+    color: #fff;
+    cursor: pointer;
+}
+
+
+
+
+
+/* Screen Share Button Styling */
+.control-btn.present-screen {
+    background: transparent;
+    color: white;
+    border: none;
+    /* border-radius: 50%; */
+    padding: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+.control-btn.present-screen:hover {
+    background: transparent;
+}
+
+/* Video Preview Styling */
+.video-preview {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 300px;
+    height: auto;
+    background: #000;
+    border: 2px solid #007bff;
+    border-radius: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.video-preview.hidden {
+    display: none;
+}
+.video-preview video {
+    width: 100%;
+    border-radius: 10px;
+}
+#stopScreenShare {
+    margin: 10px;
+    padding: 5px 15px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+#stopScreenShare:hover {
+    background: #c82333;
+}
+/* Video Presentation */
+#user1212 {
+    display: flex;
+    flex-wrap: wrap; /* Allows users to wrap into rows if needed */
+    gap: 12px; /* Adds spacing between user divisions */
+    max-height: 100%; /* Prevents overflow */
+    overflow-y: auto; /* Adds vertical scrolling if content exceeds height */
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%; /* Ensures it uses full width */
+    justify-content: center; /* Centers user divisions */
+}
+
+.userbox {
+    background: #2c2b2b;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+    text-align: center;
+    flex: 1 1 30%; /* Default size when not presenting */
+    max-width: calc(33.33% - 20px); /* Adjust to ensure proper spacing */
+}
+
+#presentationContainer {
+    display: none; /* Hidden by default */
+    background: #2c2c2c;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+#presenr {
+    width: 100%;
+    height: 100%;
+}
+
+.chatbox.active, details.active {
+    z-index: 1001;
+}
+
+/* Set a higher z-index for participants popup when it's open */
+.participants-popup.active {
+    z-index: 1001;
+}
+
+
+/* Participants Button Styling */
+.control-btn.participants {
+    background: transparent;
+    color: white;
+    border: none;
+    /* border-radius: 50%; */
+    padding: 10px;
+    cursor: pointer;
+    /* z-index: 55; */
+    
+}
+.control-btn.participants:hover {
+    background: transparent;
+    /* z-index: 55; */
+}
+
+/* Participants Popup Styling */
+.participants-popup {
+    position: fixed;
+    bottom: 83px;
+    right: 20px; /* Adjusted to avoid overlap */
+    width: 383px;
+    height: 607px;
+    background: #ffffff; /* Set solid background */
+    border: 1px solid #ccc; /* Added visible border */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000; /* Same z-index as chatbox */
+}
+.participants-popup.hidden {
+    display: none;
+}
+.participants-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: #333;
+    color: white;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+.participants-list {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+.participants-list li {
+    padding: 5px 0;
+    border-bottom: 1px solid #ddd;
+}
+.participants-list li:hover {
+    background: #f0f0f0;
+}
+.participants-list li:last-child {
+    border-bottom: none;
+}
+.close-participants {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+.close-participants:hover {
+    color: #ffcccb;
+}
+
+
+
+/* Participants joining Popup Styling */
+.popup-alert {
+    display: none;
+    position: absolute;
+    bottom: 12%;
+    right: 1%;
+    width: fit-content;
+    height: fit-content;
+    background-color: rgba(0, 0, 0, 0);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.popup-alert .popup-content {
+    background-color: #65686b;
+    padding: 4px;
+    border-radius: 4px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+}
+
+.popup-alert .popup-close {
+    font-size: 10px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+}
+

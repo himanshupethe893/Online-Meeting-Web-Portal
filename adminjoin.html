@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF- 8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Link Management</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function () {
+            // Retrieve the userName from sessionStorage
+            const userName = sessionStorage.getItem("userName");
+    
+            // Parse URL parameters to get the meeting ID
+            const urlParams = new URLSearchParams(window.location.search);
+            // var meeting_id = urlParams.get("meetingID");
+    
+            // // Validate meeting ID and userName
+            // if (!userName || !meeting_id) {
+            //     alert("User Name or Meeting ID is missing. Please try again.");
+            //     window.location.href = "/action.html";
+            //     return;
+            // }
+    
+            // Use the userName and meeting_id as needed
+            console.log("User Name:", userName);
+            console.log("Meeting ID:", meeting_id);
+    
+            // Initialize the application
+            MyApp._init(userName, meeting_id);
+        });
+    </script>
+    
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            background-image: url('../public/Assets/images/backimg.webp');
+        }
+
+        .container {
+            background: rgba(55, 54, 54, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            width: 65%;
+            max-width: 600px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+            text-align: center;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s ease-out 0.4s forwards, slideUp 1.5s ease-in-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(20px);
+            }
+            to {
+                transform: translateY(0);
+            }
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .input-group {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 140px; /* Adjust as needed */
+            color: #aaa; /* Icon color */
+            transition: opacity 0.3s ease; /* Smooth transition for icon visibility */
+        }
+        
+
+        #generateIcon {
+        color: #aaa; /* Change the icon color to yellow */
+        left: 130px;/* Increase the size of the icon */
+        transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition for visibility and scaling */
+    }
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        input[type="text"] {
+            padding-left: 30px; 
+            padding: 0.5rem;
+            width: 70%;
+            margin: 0.3rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: #333;
+            text-align: center;
+            font-size: 1rem;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .button {
+            padding: 0.8rem 1.5rem;
+            margin: 0.5rem;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            margin-left: 20px;
+            cursor: pointer;
+            background: rgb(43, 189, 175);
+            color: white;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        #generatedLink{
+            color: white;
+            margin-left: 1px;
+            max-width: 70%;
+            overflow-wrap: break-word;
+        }
+        #generatednum{
+            color: white;
+            margin-left: 1px;
+            max-width: 70%;
+            overflow-wrap: break-word;
+        }
+        #orgenrate{
+            color: white;
+            margin-left: 1px;
+            max-width: 70%;
+            overflow-wrap: break-word;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container" id="linkManagementContainer">
+    <!-- Join a Meeting Section -->
+    <div class="section">
+        <h3>Join a Meeting</h3>
+        <div class="input-group">
+            <i class="fa fa-keyboard-o" id="joinIcon"></i>
+            <input type="text" id="codeInput" placeholder="Enter link to join" class="enter-code">
+            <button class="button join-meeting join-action" id="joinBtn">Join</button>
+        </div>
+    </div>
+
+    <!-- Generate Link Section -->
+    <div class="section">
+        <h3>New Meet</h3>
+        <div class="input-group" style="display: flex; justify-content: center;">
+            <!-- <i class="fa fa-link" id="generateIcon"></i> -->
+            <!-- <input type="text" id="generateLinkInput" placeholder="Enter link to generate"> -->
+            <button class="button new-meeting" id="generateLinkButton">New Meet</button>
+
+        </div>
+        <div class="input-group" style="margin-top: 1rem; display: flex; justify-content: center; display: flex; flex-direction: column;">
+            <div style="display: flex;
+                flex-direction: column;
+                justify-content: center;
+                width: 100%;
+                align-items: center;"><div id="generatedLink"></div><div id="orgenrate"></div><div id="generatednum"></div></div>
+            <div><p style="font-size: x-small; font-style: italic; color:#aaa">*Note: Please enter numeric code in input field. Do not enter link.</p></div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script src="/public/Assets/JS/main.js"></script>
+<script>
+    document.querySelector("#generateLinkButton").addEventListener("click", function () {
+            const meeting_id = Math.floor(Math.random() * 100000000); // Generate random 8-digit ID
+            const meetingURL = window.location.origin + "?meetingID=" + meeting_id;
+
+            // Display the generated link
+            document.querySelector("#generatedLink").textContent = meetingURL;
+            document.querySelector("#orgenrate").textContent = 'OR';
+            document.querySelector("#generatednum").textContent = meeting_id;
+
+            // Send the meeting_id to the backend using fetch
+            fetch('/create-meeting', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ meeting_id: meeting_id })
+            })
+                .then(response => {
+                    console.log("Response status:", response.status); // Log status code
+                    return response.json();
+                })
+                .then(data => {
+                    console.log("Backend response data:", data); // Log the response data
+                    alert("Meeting created successfully! Link: " + meetingURL);
+                })
+                .catch(error => {
+                    console.error("Error:", error); // Log the error
+                    alert("Failed to create meeting: " + error);
+                });
+
+            // Copy the generated link to clipboard
+            navigator.clipboard.writeText(meetingURL)
+                .then(function () {
+                    alert("Meeting link copied to clipboard: " + meetingURL);
+                })
+                .catch(function (err) {
+                    alert("Failed to copy link: " + err);
+                });
+        });
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Join button functionality
+        document.querySelector("#joinBtn").addEventListener("click", function () {
+            let inputValue = document.querySelector("#codeInput").value.trim();
+
+            // Check if the input is a URL or a plain meeting ID
+            let meetingID;
+            if (inputValue.startsWith("http")) {
+                try {
+                    const urlPattern = /[?&]meetingID=([0-9]+)/; // Regex to extract meetingID from URL
+                    const match = inputValue.match(urlPattern);
+                    if (match && match[1]) {
+                        meetingID = match[1]; // Extract the meetingID
+                    } else {
+                        alert("No valid meeting ID found in the URL.");
+                        return;
+                    }
+                } catch (error) {
+                    alert("An error occurred while parsing the URL.");
+                    return;
+                }
+            } else {
+                meetingID = inputValue; // Treat it as a plain meeting ID
+            }
+
+            // Ensure meeting ID is valid
+            if (!meetingID || isNaN(meetingID)) {
+                alert("Please enter a valid meeting ID or URL.");
+                return;
+            }
+
+            // Validate meeting ID with the backend
+            fetch('/validate-meeting', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ meeting_id: meetingID })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.message === "Valid meeting ID.") {
+                        alert("Successfully joined the meeting!");
+                        // Redirect to the meeting page
+                        sessionStorage.setItem("isAdmin", "true");
+                        const meetingURL = window.location.origin + "?meetingID=" + meetingID;
+                        window.location.replace(meetingURL);
+                    } else {
+                        alert("Invalid or expired meeting ID.");
+                    }
+                })
+                .catch(error => {
+                    console.error("Error:", error);
+                    alert("Failed to validate meeting ID.");
+                });
+        });
+    });
+</script>
+
+
+
+
+<!-- // <script>
+//     // $(function(){
+//     //   $(document).on("click", ".join-meeting", function(){
+//     //     $(".enter-code").focus();
+//     //   })
+//     //   $(document).on("click", ".join-action", function(){
+//     //     var join_value = $('.enter-code').val();
+//     //     var meetingURL = window.location.origin+"?meetingID="+join_value;
+//     //     window.location.replace(meetingURL);
+//     //   })
+//     //   $(document).on("click", ".new-meeting", function(){
+//     //     var eight_d_value = Math.floor(Math.random()*100000000);
+//     //     var meetingURL = window.location.origin+"?meetingID="+eight_d_value;
+//     //     // var meetingURL = window.location.origin+"?meeting="+join_value;
+//     //     window.location.replace(meetingURL);
+//     //   })
+//     // })
+
+//     $(function () {
+//     $(document).on("click", ".join-meeting", function () {
+//         $(".enter-code").focus();
+//     });
+
+//     $(document).on("click", ".join-action", function () {
+//         var join_value = $('.enter-code').val().trim();
+//         if (join_value) {
+//             sessionStorage.setItem("isAdmin", "true");
+//             var meetingURL = window.location.origin + "?meetingID=" + encodeURIComponent(join_value);
+            
+//             window.location.replace(meetingURL);
+//         } else {
+//             alert("Please enter a valid meeting code.");
+//         }
+//     });
+    
+//     $(document).on("click", ".new-meeting", function () {
+//         var eight_d_value = Math.floor(Math.random() * 100000000);
+//         var meetingURL = window.location.origin + "?meetingID=" + eight_d_value;
+
+//         // Display the generated link
+//         $("#generatedLink").text(meetingURL);
+
+//         // Copy the generated link to clipboard
+//         navigator.clipboard.writeText(meetingURL).then(function () {
+//             alert("Meeting link copied to clipboard: " + meetingURL);
+//         }).catch(function (err) {
+//             alert("Failed to copy link: " + err);
+//         });
+//     });
+    
+// });
+
+
+//   </script> -->
+//  <!-- <script>
+//     document.getElementById("loginForm").addEventListener("submit", function(event) {
+//         event.preventDefault();  // Prevent the default form submission
+    
+//         const email = document.getElementById("email").value;
+//         const password = document.getElementById("password").value;
+    
+//         // Make a POST request to the server with email and password
+//         fetch("/login", {
+//             method: "POST",
+//             headers: {
+//                 "Content-Type": "application/json"
+//             },
+//             body: JSON.stringify({ email, password })
+//         })
+//         .then(response => response.json())
+//         .then(data => {
+//             if (data.userName) {
+//                 // Store the username in sessionStorage
+//                 sessionStorage.setItem("userName", data.userName);
+//                 // Redirect to the next page (adminjoin or whatever page)
+//                 window.location.href = "/adminjoin";  // Update with your actual path
+//             } else {
+//                 alert("Login failed. Please check your credentials.");
+//             }
+//         })
+//         .catch(error => {
+//             console.error("Error during login:", error);
+//             alert("An error occurred. Please try again.");
+//         });
+//     });
+//     </script> -->
+
+</html>

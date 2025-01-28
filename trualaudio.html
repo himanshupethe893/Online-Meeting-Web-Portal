@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Screen and Audio Recorder</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    #recorder-btn {
+      padding: 10px 20px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    #video-container video {
+      display: block;
+      margin-bottom: 10px;
+    }
+    #video-container a {
+      color: blue;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>Screen and Audio Recorder</h1>
+  <button id="recorder-btn">Start Recording</button>
+  <div id="video-container"></div>
+
+  <script>
+    const recorderBtn = document.getElementById("recorder-btn");
+    const videoContainer = document.getElementById("video-container");
+    let mediaRecorder;
+    let recordedChunks = [];
+    let isRecording = false;
+    let screenStream;
+    let micStream;
+    let combinedStream;
+
+    async function startRecording() {
+      try {
+        console.log("Requesting screen and audio permissions...");
+
+        // Request screen recording with system audio
+        screenStream = await navigator.mediaDevices.getDisplayMedia({
+          video: true,
+          audio: true, // Includes system audio
+        });
+        console.log("Screen recording permission granted.");
+
+        // Request microphone input
+        micStream = await navigator.mediaDevices.getUserMedia({
+          audio: {
+            echoCancellation: true,
+            noiseSuppression: true,
+            sampleRate: 44100,
+          },
+        });
+        console.log("Microphone permission granted.");
+
+        // Merge system audio and microphone audio
+        const audioContext = new AudioContext();
+        const systemAudio = audioContext.createMediaStreamSource(screenStream);
+        const micAudio = audioContext.createMediaStreamSource(micStream);
+
+        const destination = audioContext.createMediaStreamDestination();
+        systemAudio.connect(destination);
+        micAudio.connect(destination);
+
+        // Combine video and merged audio
+        combinedStream = new MediaStream([
+          ...screenStream.getVideoTracks(),
+          ...destination.stream.getAudioTracks(),
+        ]);
+
+        // Display screen stream (mute playback to prevent echo)
+        const videoElement = document.createElement("video");
+        videoElement.srcObject = screenStream;
+        videoElement.autoplay = true;
+        videoElement.controls = true;
+        videoElement.muted = true; // Prevent echo
+        videoElement.style.width = "400px";
+        videoElement.style.margin = "10px";
+        videoContainer.appendChild(videoElement);
+
+        // Initialize MediaRecorder
+        mediaRecorder = new MediaRecorder(combinedStream, { mimeType: "video/webm" });
+
+        // Handle recorded chunks
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data.size > 0) recordedChunks.push(event.data);
+        };
+
+        // Handle stop event
+        mediaRecorder.onstop = () => {
+          const blob = new Blob(recordedChunks, { type: "video/webm" });
+          recordedChunks = [];
+
+          // Create download link
+          const url = URL.createObjectURL(blob);
+          const downloadLink = document.createElement("a");
+          downloadLink.href = url;
+          downloadLink.download = `recording-${Date.now()}.webm`;
+          downloadLink.textContent = "Download Recording";
+          downloadLink.style.display = "block";
+          videoContainer.appendChild(downloadLink);
+        };
+
+        // Start recording
+        mediaRecorder.start();
+        isRecording = true;
+        recorderBtn.textContent = "Stop Recording";
+      } catch (error) {
+        console.error("Error starting recording:", error.name, error.message);
+        alert(`Error: ${error.message}. Please ensure you grant permissions and try again.`);
+      }
+    }
+
+    function stopStream(stream) {
+      if (stream) {
+        stream.getTracks().forEach((track) => track.stop());
+      }
+    }
+
+    recorderBtn.addEventListener("click", () => {
+      if (isRecording) {
+        // Stop recording
+        mediaRecorder.stop();
+        stopStream(screenStream);
+        stopStream(micStream);
+        isRecording = false;
+        recorderBtn.textContent = "Start Recording";
+      } else {
+        startRecording();
+      }
+    });
+
+    // Debugging helper: Test permissions
+    (async function testPermissions() {
+      try {
+        await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        console.log("Screen permissions available.");
+      } catch (error) {
+        console.warn("Screen permissions not granted:", error.message);
+      }
+
+      try {
+        await navigator.mediaDevices.getUserMedia({ audio: true });
+        console.log("Microphone permissions available.");
+      } catch (error) {
+        console.warn("Microphone permissions not granted:", error.message);
+      }
+    })();
+  </script>
+</body>
+</html>

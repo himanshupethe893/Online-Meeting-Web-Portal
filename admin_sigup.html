@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Page</title>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: url('../public/Assets/images/backimg.webp') no-repeat center center fixed;
+            background-size: cover;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            display: flex;
+            width: 60%;
+            height: 60vh;
+            background: rgba(55, 54, 54, 0.8);
+            border-radius: 10px;
+            padding: 2rem;
+            flex-direction: column;
+            align-items: center;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            width: 80%;
+        }
+
+        .input-box {
+            margin-bottom: 1.5rem;
+        }
+
+        .input-box input {
+            width: 50%; 
+            padding: 1rem;
+            border: none;
+            border-radius: 5px;
+            background-color: #f9f9f9;
+            color: #333;
+            font-size: 1rem;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+            margin: 0 auto; 
+            display: block; 
+        }
+
+
+        .input-box input::placeholder {
+            color: #aaa;
+        }
+
+        .input-box input:focus {
+            outline: none;
+            border: 2px solid rgb(43, 189, 175);
+            box-shadow: 0 0 10px rgba(43, 189, 175, 0.5);
+        }
+
+        .submit-btn {
+            padding: 0.8rem;
+            background-color: rgb(43, 189, 175);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 1rem auto; /* Centers the button horizontally */
+            display: block; /* Ensures margin auto works */
+            text-align: center; /* Optional: aligns text inside the button */
+        }
+
+
+        .submit-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-btn:focus {
+            outline: none;
+        }
+
+        p {
+            text-align: center;
+            color: white;
+            font-size: 1rem;
+        }
+
+        p a {
+            color: rgb(43, 189, 175);
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        p a:hover {
+            color: orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Faculty Signup</h2>
+        <form id="signupForm" action="/signup" method="POST">
+            <div class="input-box">
+                <input type="text" name="fname" placeholder="Name" required>
+            </div>
+            <div class="input-box">
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="input-box">
+                <input type="password" name="password" placeholder="Password" required>
+            </div>
+            <div class="input-box">
+                <input type="password" name="repassword" placeholder="Re-Enter Password" required>
+            </div>
+            <div class="input-box">
+                <button type="submit" class="submit-btn">Sign Up</button>
+            </div>
+            <p><a href="/login">Already a Member?</a></p>
+        </form>
+    </div>
+</body>
+</html>

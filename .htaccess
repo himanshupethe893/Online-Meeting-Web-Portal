@@ -1,0 +1,19 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Remove .html extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.html -f
+RewriteRule ^([^/]+)/?$ $1.html [L]
+
+# Remove .php extension
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^([^/]+)/?$ $1.php [L]
+
+# Redirect requests with extensions to clean URLs
+RewriteCond %{THE_REQUEST} "^[^ ]* .*\.html"
+RewriteRule ^(.*)\.html$ /$1 [R=301,L]
+
+RewriteCond %{THE_REQUEST} "^[^ ]* .*\.php"
+RewriteRule ^(.*)\.php$ /$1 [R=301,L]

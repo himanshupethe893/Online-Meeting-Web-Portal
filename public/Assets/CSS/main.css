@@ -1,0 +1,185 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-size: 400% 400%;
+    background: linear-gradient(135deg, #493e90, #7076aa, #83869a);
+    animation: gradientBackground 10s ease infinite;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    overflow: hidden;
+  }
+header {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #d3f0f6;
+    display: block; 
+    opacity: 0; 
+    transform: translateY(-50px);
+    animation: blockIn 1.5s ease-out forwards; 
+  }
+  
+  @keyframes blockIn {
+    0% {
+      opacity: 0;
+      transform: translateY(-50px);
+      width: 0;
+    }
+    50% {
+      opacity: 0.7;
+      transform: translateY(10px);
+      width: 90%;
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+      width: auto;
+    }
+  }
+  .container {
+    background: rgba(237, 216, 216, 0.6);
+    border-radius: 20px;
+    padding: 2rem;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.5);
+    text-align: center;
+  }
+  
+  /* Headings and Text */
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #011114;
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+  }
+  
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    color: #303131;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Dropdown Styles */
+  .dropdown {
+    padding: 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 10px;
+    width: 80%;
+    margin: 1rem auto;
+    background: linear-gradient(135deg, #000a0c, #222cac);
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .dropdown:hover {
+    transform: scale(1.05);
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.4);
+  }
+  
+  .dropdown:focus {
+    outline: none;
+    background: linear-gradient(135deg, #000a0c, #222cac);
+    color: #8ca6fb;
+  }
+  
+  /* Buttons */
+  .button {
+    padding: 0.8rem 2rem;
+    margin: 0.5rem;
+    border: none;
+    border-radius: 50px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .button.primary {
+    background: #011114
+    color rgb(188, 186, 186);
+  }
+  
+  .button.secondary {
+    background: #011114
+    color rgb(188, 186, 186);
+  }
+  
+  .button:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.4);
+  }
+  
+  /* Input Field */
+  #codeInput {
+    padding: 0.8rem;
+    width: 80%;
+    margin: 0.5rem auto;
+    border: none;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    text-align: center;
+    font-size: 1rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  #email-id {
+    padding: 0.8rem;
+    width: 80%;
+    margin: 0.5rem auto;
+    border: none;
+    border-radius: 50px;
+    background-color: rgba(255, 255, 255, 0.9);
+    color: #333;
+    text-align: center;
+    font-size: 1rem;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+  }
+  
+  #codeInput::placeholder {
+    color: #aaa;
+    font-size: 0.9rem;
+  }
+  
+
+  .hidden {
+    display: none;
+  }
+  .role-selection {
+    margin-bottom: 2rem;
+  }
+  .actions {
+    margin-top: 2rem;
+  }
+  
+  /* Responsive Styles */
+  @media (max-width: 600px) {
+    body {
+      padding: 1rem;
+    }
+  
+    .container {
+      padding: 1.5rem;
+    }
+  
+    h2 {
+      font-size: 1.5rem;
+    }
+  
+    p {
+      font-size: 1rem;
+    }
+  }
+  

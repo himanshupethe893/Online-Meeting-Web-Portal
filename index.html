@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Yash Industries Meet</title>
+    <link rel="stylesheet" href="public/Assets/CSS/bootstrap.min.css">
+    <link rel="stylesheet" href="public/Assets/CSS/style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="public/Assets/CSS/style2.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+    <script src="public/Assets/JS/jquery-3.7.1.min.js"></script>
+    <script src="public/Assets/JS/app.js"></script>
+    <script src="public/Assets/JS/script.js"></script>
+    <script src="public/Assets/JS/script2.js"></script>
+    <script src="public/Assets/JS/script3.js"></script>
+
+    
+    <!-- <script>
+        $(function () {
+            // Parse URL parameters
+            const urlParams = new URLSearchParams(window.location.search);
+            var meeting_id = urlParams.get("meetingID");
+
+            // Prompt the user for user ID
+            var user_name = sessionStorage.getItem("userName");
+            var user_id = user_name;
+
+            // Validate meeting ID and user ID
+            if (!user_id || !meeting_id) {
+                alert("User ID or meeting ID is missing. Please try again.");
+                window.location.href = "/action.html";
+                return;
+            }
+
+            // Show meeting container
+            $("#meetingContainer").show();
+
+            // Initialize the application
+            MyApp._init(user_id, meeting_id);
+        });//refer script2.js
+    </script> -->
+    <style>
+        
+        .control-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: transparent;
+            border: none;
+            color: white;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .control-btn i {
+            font-size: 24px;
+        }
+
+        .present-screen {
+            margin-right: 20px;
+        }
+
+        .participants, .chat {
+            margin-left: 5px;
+        }
+        #moreOptionsMenu.hidden {
+            display: none;
+        }
+    
+        #moreOptionsMenu ul li.menu-item {
+            transition: background-color 0.2s;
+        }
+    
+        #moreOptionsMenu ul li.menu-item:hover {
+            background-color: #444;
+            border-radius: 5px;
+        }
+        #recorder-btn {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+          }
+        /* Mute All Section */
+.mute-all {
+    margin-top: 20px;
+    text-align: center;
+}
+/* Mute All Button */
+.mute {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    display: inline-flex; 
+    border-radius: 4px;
+    gap: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.mute:hover {
+    background-color: #8e8e8e;
+    transform: scale(1.05);
+}
+
+.mute:active {
+    background-color: #757575;
+    box-shadow: 0 2px #616161;
+    transform: scale(1.05);
+}
+
+.material-icons {
+    font-size: 20px; /* Adjust the icon size */
+}
+
+
+
+
+
+
+
+/* Waiting to Join Section */
+.waiting-to-join {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    margin-top: 16px;
+    background-color: #f9f9f9;
+}
+
+.waiting-to-join h4 {
+    font-size: 18px;
+    margin-bottom: 12px;
+    color: #333;
+    font-weight: bold;
+    text-align: center;
+}
+
+.waiting-actions {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.waiting-actions button {
+    padding: 8px 16px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.admit-all {
+    background-color: #4caf50;
+    color: white;
+}
+
+.admit-all:hover {
+    background-color: #45a049;
+    transform: scale(1.05);
+}
+
+.deny-all {
+    background-color: #f44336;
+    color: white;
+}
+
+.deny-all:hover {
+    background-color: #e53935;
+    transform: scale(1.05);
+}
+    </style>
+</head>
+<body>
+    <main class="container-fluid d-flex flex-column home-wrap">
+        <div id="popupAlert" class="popup-alert hidden">
+            <div class="popup-content">
+                <span class="popup-close" onclick="closePopup()">&times;</span>
+                <p id="popupMessage"></p>
+            </div>
+        </div>
+        <div class="g-top text-white" style="width: 100% !important;">
+            <div class="top-remote-video-show-wrap d-flex" style="height: 100%; width: 100% !important;">
+                <div id="meetingContainer" class="w-75" style="display: none; height: 100%; width: 100% !important;">
+                    <div class="call-wrap" style="background-color: black; height: 100%; overflow-y: hidden; width: 100% !important;">
+                        <div class="video-wrap" id="divUsers" style="display: flex;
+                            width: 100% !important;
+                            align-content: center;
+                            justify-content: center;
+                            align-items: center;
+                            border: none;
+                            height: 100%;
+                            overflow-y: scroll;
+                            scrollbar-width: thin;
+                            scroll-behavior: smooth;
+                            scrollbar-color: grey;
+                            scrollbar-width: thin;">
+                            <div id="presentationContainer" style="display: none; width: 60% !important; height: 100% !important;">
+                                <video autoplay id="presenr" style="width: 100%; height: 100%; border: 2px solid white;"></video>
+                            </div>
+                            <div style="display: flex; width: 40% !important; height: 100% !important;display: flex; justify-content: center; align-items: center;  align-content: center; flex-wrap: wrap; border: none; height: auto;" id="user1212">
+                            <div id="me" class="userbox display-center flex-column" style="border: 2px solid white; ">
+                                <h2 class="display-center" style="font-size: 14px; background-color: rgba(0, 0, 0, 0.5) !important; z-index: 1;"></h2>
+                                <div class="display-center">
+                                    <video autoplay muted id="LocalVideoPlayer"></video>
+                                </div>
+                            </div>
+                            <div id="otherTemplate" class="userbox display-center flex-column" style="display: none; border: 2px solid white;">
+                                <h2 class="display-center" style="font-size: 14px;"></h2>
+                                <div class="display-center">
+                                    <video autoplay muted></video>
+                                    <audio autoplay controls muted style="display: none;"></audio>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="chatbox hidden">
+            <div class="chat-header">
+                <h3>Chat</h3>
+                <button class="close-chat">&times;</button>
+            </div>
+            <div class="chat-messages"></div>
+            <div class="chat-input">
+                <input type="text" id="chatMessage" placeholder="Type a message...">
+                <button id="sendChat">Send</button>
+            </div>
+        </div>
+        <div class="details hidden">
+            <div class="chat-header">
+                <h3>Meeting Details</h3>
+                <button class="close-chat" onclick="toggleDetails()">&times;</button>
+            </div>
+            <div style="width: 100%; display: flex; flex-direction: row;">
+                <div class="txtlink">Link:</div>
+                <p id="meeting-url" style="text-align: center; padding-top: 10px;"></p> <!-- Empty <p> tag to hold the generated URL -->
+            </div>
+            
+            <div class="detail-block">
+                
+                <button id="copytxt" onclick="copyMeetingURL()">Copy</button>
+        <p id="copy-message" style="color: lightgreen;
+        display: none;
+        position: absolute;
+        bottom: 91%;
+        left: 3%;">Link copied to clipboard!</p>
+            </div>
+        </div>
+        <div class="participants-popup hidden">
+            <div class="participants-header">
+                <h3>Participants</h3>
+                <button class="close-participants">&times;</button>
+                <div class="participants-popup hidden">
+                <div class="participants-header">
+                    <h3>Participants</h3>
+                    <button class="close-participants">&times;</button>
+                </div>
+                </div>
+            </div>
+            <div class="mute-all" id="mutebtn">
+                <!-- Mute All Button -->
+                <button class="btn mute" id="muteAllBtn">
+                    <span class="material-icons">mic_off</span> Mute All
+                </button>                
+                
+                <button class="btn vid">
+                    <span class="material-icons">videocam_off</span> All Cam Off
+                </button>
+            </div>
+            <div class="waiting-to-join" id="waitinglist">
+                <h4>Waiting to Join</h4>
+                <ul class="waiting-list">
+                </ul>
+                <div class="waiting-actions">
+                    <button class="admit-all">Admit All</button>
+                    <button class="deny-all">Deny All</button>
+                </div>
+            </div>
+            <ul class="participants-list">
+                <!-- Dynamic participant names will be appended here -->
+            </ul>
+        </div>
+        <div class="g-bottom bg-dark m-0 d-flex justify-content-between align-items-center">
+            <div class="bottom-left d-flex" style="height: 10vh;">
+                <div class="display-center cursor-pointer meeting-details-button d-flex align-items-center text-white" onclick="toggleDetails()">Meeting Details
+                    <span class="material-icons text-white">keyboard_arrow_down</span>
+                </div>
+            </div>
+            <div class="bottom-middle d-flex justify-content-center text-white align-items-center" style="height: 10vh;">
+                <div class="mic-toggle-wrap action-icon-style display-center mr-2 cursor-pointer" id="miceMuteUnmute">
+                    <span class="material-icons">mic_off</span>
+                </div>
+                <!-- <div class="end-call-wrap action-icon-style display-center mr-2 cursor-pointer">
+                    <span class="material-icons text-danger">call</span>
+                </div> -->
+                <div id="controls" class="end-call-wrap action-icon-style display-center mr-2 cursor-pointer">
+                    <button id="end-call" class="hoverButton" style="background-color: transparent; border: none;"><span class="material-icons text-danger">call</span></button>
+                </div>
+
+                <!-- <script>
+                    const button = document.getElementById('hoverButton');
+            
+                    button.addEventListener('mouseover', function() {
+                        button.style.border = 'none';
+                    });
+            
+                    button.addEventListener('mouseout', function() {
+                        button.style.border = 'none';
+                    });
+                </script> -->
+
+                <div class="video-toggle-wrap action-icon-style display-center cursor-pointer" id="videoCamOnOff">
+                    <span class="material-icons">videocam_off</span>
+                </div>
+            </div>
+            <div class="bottom-right d-flex justify-content-center align-items-center text-white mr-3" style="height: 10vh;">
+                <button class="control-btn participants" title="Participants">
+                    <i class="material-icons">people</i>
+                </button>
+                <button class="control-btn chat" title="Chat">
+                    <i class="material-icons">message</i>
+                </button>
+                <button class="control-btn present-screen" title="Present Screen">
+                    <i class="material-icons">present_to_all</i>
+                    <div>Present Now</div>
+                </button>
+                <div class="option-wrap cursor-pointer display-center d-flex align-items-center" style="height: 10vh; position: relative;">
+                    <div class="option-icon display-center d-flex" id="moreOptionsToggle" title="More Options">
+                        <span class="material-icons" style="font-size: 28px;">more_vert</span>
+                    </div>
+                    <div id="moreOptionsMenu" class="hidden" style="position: absolute;
+                    top: -94%;
+                    right: 12px;
+                    background-color: #2c2c2c;
+                    border: 1px solid #444;
+                    border-radius: 8px;
+                    padding: 10px;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+                    z-index: 100;
+                    width: 148px;
+                    height: 62px;">
+                        <ul style="list-style: none; margin: 0; padding: 0; font-size: 16px;">
+                            <li id="recordScreenOption" class="menu-item" style="padding: 8px; cursor: pointer; color: #fff;">Record Screen</li>
+                        </ul>
+
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+    </main>
+</body>
+<script>
+    document.getElementById("moreOptionsToggle").addEventListener("click", function () {
+    const menu = document.getElementById("moreOptionsMenu");
+    menu.classList.toggle("hidden");
+});
+
+const recorderBtn = document.getElementById("recordScreenOption");
+// Initialize recording variables
+let mediaRecorder, screenStream, micStream, combinedStream;
+let recordedChunks = [];
+let isRecording = false;
+
+async function startRecording() {
+    try {
+        screenStream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: true });
+        micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        const audioContext = new AudioContext();
+        const systemAudio = audioContext.createMediaStreamSource(screenStream);
+        const micAudio = audioContext.createMediaStreamSource(micStream);
+
+        const destination = audioContext.createMediaStreamDestination();
+        systemAudio.connect(destination);
+        micAudio.connect(destination);
+
+        combinedStream = new MediaStream([...screenStream.getVideoTracks(), ...destination.stream.getAudioTracks()]);
+        mediaRecorder = new MediaRecorder(combinedStream, { mimeType: "video/webm" });
+
+        mediaRecorder.ondataavailable = (e) => recordedChunks.push(e.data);
+        mediaRecorder.onstop = () => {
+            const blob = new Blob(recordedChunks, { type: "video/webm" });
+            recordedChunks = [];
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `recording-${Date.now()}.webm`;
+            a.click();
+        };
+
+        mediaRecorder.start();
+        isRecording = true;
+        recorderBtn.textContent = "Stop Recording";
+    } catch (error) {
+        console.error("Error starting recording:", error);
+        alert("Failed to start recording. Check permissions.");
+    }
+}
+
+function stopRecording() {
+    if (mediaRecorder) mediaRecorder.stop();
+    if (screenStream) screenStream.getTracks().forEach((track) => track.stop());
+    if (micStream) micStream.getTracks().forEach((track) => track.stop());
+    isRecording = false;
+    recorderBtn.textContent = "Start Recording";
+}
+
+recorderBtn.addEventListener("click", () => {
+    if (isRecording) stopRecording();
+    else startRecording();
+});
+
+
+    
+        
+    </script>
+    
+    <script>
+        // Function to toggle the popup visibility
+        function toggleDetails() {
+            const details = document.querySelector('.details');
+            details.classList.toggle('hidden'); // Show or hide the popup
+        }
+    
+        // Function to copy the meeting URL
+        function copyMeetingURL() {
+            const meetingURL = document.getElementById("meeting-url").textContent; // Get the URL text
+    
+            if (!meetingURL) {
+                console.error("Meeting URL is empty. Cannot copy.");
+                return;
+            }
+    
+            // Copy to clipboard
+            navigator.clipboard.writeText(meetingURL)
+                .then(() => {
+                    // Show success message
+                    const message = document.getElementById("copy-message");
+                    message.style.display = "block";
+    
+                    // Hide the message after 2 seconds
+                    setTimeout(() => {
+                        message.style.display = "none";
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error("Failed to copy text: ", err);
+                });
+        }
+    
+        // Dynamically set the meeting URL
+        document.addEventListener("DOMContentLoaded", () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            var meeting_id = urlParams.get("meetingID");
+            const meetingURL = window.location.origin + "?meetingID=" + meeting_id;
+            document.getElementById("meeting-url").textContent = meetingURL;
+        });
+    </script>
+</html>

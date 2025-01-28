@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yash Industries Meet</title>
+    <!-- <link rel="stylesheet" href="/public/Assets/CSS/main.css"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  
+    <style>
+      .logo-container {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        z-index: 1000;
+      }
+      
+      .logo {
+        width: 95px; /* Adjust size as needed */
+        height: auto;
+        cursor: pointer;
+      }
+      
+      body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 0;
+        background: url('../public/Assets/images/backimg.webp') no-repeat center center fixed;
+        background-size: cover;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        cursor: none;
+      }
+  
+      .cursor {
+        width: 20px;
+        height: 20px;
+        border: 2px solid rgb(43, 189, 175);
+        border-radius: 50%;
+        position: absolute;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        z-index: 1000;
+        transition: transform 0.2s ease;
+      }
+  
+      .heading {
+        font-size: 4rem;
+        color: white;
+        position: absolute;
+        top: 30%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        opacity: 0;
+        animation: fadeInHeading 2s forwards;
+        z-index:2 ;
+      }
+  
+      .container {
+        background: rgba(55, 54, 54, 0.8);
+        border-radius: 10px;
+        padding: 9rem;
+        width: 70%;
+        max-width: 1500px;
+        height: 40vh;
+        margin: 15% auto;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.5);
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        position: relative;
+        animation: fadeInContainer 1.5s ease 2s forwards;
+        opacity: 0;
+      }
+  
+      
+      .hidden {
+        display: none; /* Initially hidden */
+      }
+
+      h2 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: white;
+      }
+      h3 {
+        font-size: 2rem;
+      }
+      p {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: white;
+      }
+  
+      .dropdown {
+        padding: 1rem;
+        font-size: 1rem;
+        border: none;
+        border-radius: 5px;
+        width: 200px;
+        margin-right: 1rem;
+        background: #f0f0f0;
+        color: #333;
+      }
+  
+      .button {
+        padding: 0.8rem 1.5rem;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        font-size: 1rem;
+        cursor: pointer;
+        background: rgb(43, 189, 175);
+        color: white;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+  
+      .button:hover {
+        transform: scale(1.05);
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+      }
+  
+      .button:focus {
+        outline: none;
+      }
+  
+      #codeInput, #email-id, #username, #organization {
+        padding: 0.8rem;
+        width: 200px;
+        margin: 0.5rem;
+        border: none;
+        border-radius: 5px;
+        background-color: #f9f9f9;
+        color: #333;
+        text-align: center;
+        font-size: 1rem;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+      }
+  
+      .actions {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-top: 1rem;
+      }
+    
+      @keyframes fadeInHeading {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+      @keyframes shiftUp {
+        from {
+          top: 30%;
+          opacity: 0;
+        }
+        to {
+          top: 5%;
+          opacity: 1;
+        }
+      }
+      
+      .heading.shift-up {
+        animation: shiftUp 1s forwards;
+        opacity: 1;
+      }
+      
+      @keyframes fadeInContainer {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+  
+    </style>
+  </head>
+  <body>
+    <header class="logo-container">
+      <a href="/login" class="logo-container">
+      <img src="../public/Assets/images/logo.png" alt="Yash Industries Logo" class="logo">
+      </a>
+    </header>
+    <div class="cursor" id="cursor"></div>
+    <!-- Yash Industry Heading -->
+    <h1 class="heading">YASH INDUSTRIES MEET</h1>
+  
+    <main class="container">
+      <section>
+        <h2>Fill information first to start ...</h2>
+        <div style="display: flex; flex-direction: column; align-items: center;">
+          <form class="username-form" style="display: flex; margin-bottom: 1rem;">
+            <input type="text" id="username" placeholder="Enter your name...">
+            <input type="text" id="organization" class="username" placeholder="Enter your college/company name...">
+            <input type="text" id="email-id" class="username" placeholder="Enter your email...">
+            <button type="button" class="button" id="confirmRoleBtn">Confirm</button>
+          </form>
+        </div>
+      </section>
+    
+      <section id="meetingOptions" class="hidden">
+        <div class="actions">
+          <div class="input-group" style="display: flex; align-items: center;">
+            <input type="text" id="codeInput" placeholder="Enter a code or link" style="flex: 1; margin-right: 8px;" class="enter-code">
+            <button class="button join-meeting join-action" id="joinBtn">Join</button>
+          </div>
+        </div>
+      </section>
+      
+    </main>
+    
+    
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          // Join button functionality
+          document.querySelector("#joinBtn").addEventListener("click", function () {
+              let inputValue = document.querySelector("#codeInput").value.trim();
+  
+              // Check if the input is a URL or a plain meeting ID
+              let meetingID;
+              if (inputValue.startsWith("http")) {
+                  try {
+                      const urlPattern = /[?&]meetingID=([0-9]+)/; // Regex to extract meetingID from URL
+                      const match = inputValue.match(urlPattern);
+                      if (match && match[1]) {
+                          meetingID = match[1]; // Extract the meetingID
+                      } else {
+                          alert("No valid meeting ID found in the URL.");
+                          return;
+                      }
+                  } catch (error) {
+                      alert("An error occurred while parsing the URL.");
+                      return;
+                  }
+              } else {
+                  meetingID = inputValue; // Treat it as a plain meeting ID
+              }
+  
+              // Ensure meeting ID is valid
+              if (!meetingID || isNaN(meetingID)) {
+                  alert("Please enter a valid meeting ID or URL.");
+                  return;
+              }
+  
+              // Validate meeting ID with the backend
+              fetch('/validate-meeting', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({ meeting_id: meetingID })
+              })
+                  .then(response => response.json())
+                  .then(data => {
+                      if (data.message === "Valid meeting ID.") {
+                          alert("Successfully joined the meeting!");
+                          // Redirect to the meeting page
+                          sessionStorage.setItem("isAdmin", "false");
+                          const meetingURL = window.location.origin + "?meetingID=" + meetingID;
+                          window.location.replace(meetingURL);
+                      } else {
+                          alert("Invalid or expired meeting ID.");
+                      }
+                  })
+                  .catch(error => {
+                      console.error("Error:", error);
+                      alert("Failed to validate meeting ID.");
+                  });
+          });
+      });
+  </script>
+  
+  
+  
+    <script>
+      $(function(){
+    $(document).on("click", "#confirmRoleBtn", function(){
+        var name = $('#username').val();  // Get the name entered by the user
+        var organization = $('#organization').val();  // Get the organization
+        var email = $('#email-id').val();  // Get the email
+
+        // Ensure that the name is not empty
+        if (name === "") {
+            alert("Please enter your name.");
+            return;
+        }
+
+        sessionStorage.setItem("userName", name);
+        sessionStorage.setItem("organization", organization);
+        sessionStorage.setItem("email", email);
+    });
+});
+
+
+    </script>
+    
+    <script src="public/Assets/JS/main.js"></script>
+</body>
+
+</html>
